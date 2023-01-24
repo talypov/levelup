@@ -1,0 +1,20 @@
+{%  extends 'base.html' %}
+
+{% block title %}
+Add product :: {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Обновление продукта</h1>
+
+<form action="{% url 'product_update_url'  product.id %}" method="post">
+{% csrf_token %}
+
+    {{ form.as_p }}
+
+<button type="submit" class="btn btn-primary btn-block">Update product</button>
+</form>
+
+{% endblock %}

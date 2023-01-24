@@ -1,0 +1,15 @@
+Product_no;Name;Description;R-state;Order;Type;Qty
+101;product1;description 1;A1;order1;'MOBILE';2
+101;product2;description 2;A2;order2;'AUDIO';2
+103;product3;description 3;A2;order3; 'TV';3
+104;product4;description 4;B2;order1;'MOBILE';
+105;product5;description 5;A3;order5;'MOBILE';
+101;product1;description 1;A1;order1;'MOBILE';2
+107;product7;description 7;A4;order7; 'TV';5
+108;product8;description 8;B4;order1;'PHOTO';3
+109;product9;description 9;A5;order9;'MOBILE';9
+110;product10;description 10;B5;order1;'AUDIO';
+111;product11;description 11;A6;order11;'MOBILE';
+112;product12;description 12;B6;order12;'AUDIO';3
+113;product13;description 13;A7;order13;'PHOTO';1
+114;product14;description 14;A8;order14;'PHOTO';2

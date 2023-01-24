@@ -1,0 +1,16 @@
+<div class="card m-3">
+  <div class="card-body">
+    <h5 class="card-title">{{order.order_no }}</h5>
+    <h5 class="card-title">{{ order.date_create }}</h5>
+    <h5 class="card-title">{{ order.date_update }}</h5>
+    <h5 class="card-title">{{ order.products }}</h5>
+      {% for product in products %}
+         <p>
+            <h5 class="card-title">{{ product }}</h5>
+         </p>
+      {% endfor %}
+    <a href="{{ order.get_absolute_url }}" class="btn btn-light">Read</a>
+      <a href="{% url 'order_update_url' order.order_no %}" class="btn btn-light">Update</a>
+      <a href="{% url 'order_delete_url' order.order_no %}" class="btn btn-light">Delete</a>
+  </div>
+</div>

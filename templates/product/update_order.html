@@ -1,0 +1,20 @@
+{%  extends 'base.html' %}
+
+{% block title %}
+Update order :: {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Обновление order</h1>
+
+<form action="{% url 'order_update_url'  order.order_no %}" method="post">
+{% csrf_token %}
+
+    {{ form.as_p }}
+
+<button type="submit" class="btn btn-primary btn-block">Update order</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+<div class="card m-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ product.product_no }}</h5>
+    <h5 class="card-title">{{ product.name }}</h5>
+    <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+{#      <h5 class="card-title">{{ product.order }}</h5>#}
+               {% for ord in order %}
+             <p>
+                <h5 class="card-title">{{ ord }}</h5>
+             </p>
+         {% endfor %}
+    <a href="{{ product.get_absolute_url }}" class="btn btn-light">Read</a>
+      <a href="{% url 'product_update_url' product.id %}" class="btn btn-light">Update</a>
+      <a href="{% url 'product_delete_url' product.id %}" class="btn btn-light">Delete</a>
+  </div>
+{#     <div class="card-footer text-muted">#}
+{#         Orders:#}
+{#         {% for order in o.versions.all %}#}
+{#             <p>#}
+{#                <a href="{{ version.get_absolute_url }}">{{ version.title|title }}</a>#}
+{#             </p>#}
+{#         {% endfor %}#}
+{#  </div>#}
+</div>

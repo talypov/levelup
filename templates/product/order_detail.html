@@ -1,0 +1,19 @@
+{%  extends 'base.html' %}
+
+    {% block title %}
+        {{ order.order_no }} - {{ block.super }}
+    {% endblock %}
+
+
+    {% block content %}
+        <h1 class="mb-5">
+            {{ order.order_no }}
+        </h1>
+        <p>
+            {{ order.date_create }}
+        </p>
+
+        {% for product in products %}
+            {% include 'product/product_card.html' %}
+        {% endfor %}
+    {% endblock %}

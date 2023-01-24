@@ -1,0 +1,23 @@
+{%  extends 'base.html' %}
+
+{% block title %}
+Add order :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Добавление заказа</h1>
+
+<form action="{% url 'order_add_url' %}" method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Добавить order</button>
+</form>
+
+{% endblock %}
