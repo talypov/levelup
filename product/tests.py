@@ -149,7 +149,7 @@ class TestParseCSV(LevelUpAPITestCase):
         self.client.login(username=self.user.username, password='test')
 
     def test_parse_csv_success(self):
-        p_list = ProductListCSV.objects.create(document_name='test-csv', file='files/test-csv.csv')
+        ProductListCSV.objects.create(document_name='test-csv', file='files/test-csv.csv')
         TaskResult.objects.create(task_id='test_task')
         parse_csv_task()
         products = Product.objects.all()

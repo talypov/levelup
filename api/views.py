@@ -1,16 +1,14 @@
 import time
 
-from django.http import HttpResponse
 from django_celery_results.models import TaskResult
 from rest_framework import viewsets, status
-from rest_framework.decorators import parser_classes, action
+from rest_framework.decorators import parser_classes
 from rest_framework.exceptions import UnsupportedMediaType
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework_csv.parsers import CSVParser
-from rest_framework.request import Request
 
-from api.serializers import ProductSerializer, OrderSerializer, ProductListSerializer,\
+from api.serializers import ProductSerializer, OrderSerializer, ProductListSerializer, \
     TaskResultSerializer
 from product.models import Product, Order, ProductListCSV
 from product.tasks import parse_csv_task

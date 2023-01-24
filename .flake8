@@ -4,4 +4,4 @@ exclude =
     venv,
     product/migrations,
 max-complexity = 10
-max-line-length = 99
+max-line-length = 110
