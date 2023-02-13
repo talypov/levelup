@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@b@f@hn*y(sd$rognwk9@caz@*-pqd6(9fvt0%49iwi(ko&e_6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '127.0.0.1:8000', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '127.0.0.1:8000', '0.0.0.0', '0.0.0.0:9000']
 
 
 # Application definition
@@ -77,35 +77,35 @@ WSGI_APPLICATION = 'levelup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db2.sqlite3',
-#     },
-#     'test': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db-test.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'levelup',
-        'USER': 'levelup',
-        'PASSWORD': 'PASSWORD',
-        'HOST': 'localhost',
-        'PORT': 5961,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db2.sqlite3',
     },
     'test': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'levelup_test',
-        'USER': 'anton',
-        'PASSWORD': 'Test123456',
-        'HOST': 'localhost',
-        'PORT': 5961,
-    },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db-test.sqlite3',
+    }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'levelup',
+#         'USER': 'levelup',
+#         'PASSWORD': 'PASSWORD',
+#         'HOST': 'localhost',
+#         'PORT': 5961,
+#     },
+#     'test': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'levelup_test',
+#         'USER': 'anton',
+#         'PASSWORD': 'Test123456',
+#         'HOST': 'localhost',
+#         'PORT': 5961,
+#     },
+# }
 
 
 # Password validation
