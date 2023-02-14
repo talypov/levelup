@@ -1,8 +1,8 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
-    hooks:
-    -   id: flake8
+#-   repo: https://github.com/pre-commit/pre-commit-hooks
+#    rev: v2.3.0
+#    hooks:
+#    -   id: flake8
 #    -   id: django-test
 
 - repo: local
@@ -14,11 +14,12 @@ repos:
       language: system
       types: [python]
 
-#    - id: django-test
-#      name: django-test
-#      entry: python manage.py test
-#      language: system
-#      types: [python]
+    - id: django-test
+      name: django-test
+      entry: python manage.py test
+      always_run: true
+      pass_filenames: false
+      language: system
 
 
 #repos:
@@ -32,13 +33,4 @@ repos:
 #    rev: 5.0.0
 #    hooks:
 #    -   id: flake8
-#
-#-   repo: local
-#    hooks:
-#    -   id: django-test
-#        name: django-test
-#        entry: python manage.py test
-#        always_run: true
-#        pass_filenames: false
-#        language: system
 #
