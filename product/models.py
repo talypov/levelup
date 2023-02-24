@@ -34,7 +34,7 @@ class Product(models.Model):
                     (AUDIO, 'Audio system'),
                     (PHOTO, 'Photo camera')]
 
-    product_no = models.CharField(max_length=100, blank=False, null=False, db_index=True, unique=True)
+    product_no = models.CharField(max_length=100, blank=False, null=False, db_index=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=1000, null=True, blank=True)
     r_state = models.CharField(max_length=100, blank=True, null=True)

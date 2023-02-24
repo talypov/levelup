@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+    web:
+        build: .
+        command: python /code/manage.py runserver 0.0.0.0:8000
+        volumes:
+          - .:/code
+        ports:
+          - 8000:8000
+        depends_on:
+          - db
+    db:
+        image: postgres
+        volumes:
+          - postgres_data:/var/lib/postgresql/data/
+        environment:
+          - "POSTGRES_HOST_AUTH_METHOD=trust"
+    celery:
+        build: .
+        command: celery -A levelup worker -l info -P gevent
+        volumes:
+          - .:/usr/src/app
+        environment:
+          - DEBUG=1
+          - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+          - CELERY_BROKER=redis://redis:6379/0
+          - CELERY_BACKEND=redis://redis:6379/0
+        depends_on:
+          - web
+          - redis
+    redis:
+        image: "redis:latest"
+
+volumes:
+  postgres_data:

@@ -77,36 +77,50 @@ WSGI_APPLICATION = 'levelup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db2.sqlite3',
-    },
-    'test': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db-test.sqlite3',
-    }
-}
-
+# Databases for local sqlite
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'levelup',
-#         'USER': 'levelup',
-#         'PASSWORD': 'PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 5961,
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db2.sqlite3',
 #     },
 #     'test': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'levelup_test',
-#         'USER': 'anton',
-#         'PASSWORD': 'Test123456',
-#         'HOST': 'localhost',
-#         'PORT': 5961,
-#     },
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db-test.sqlite3',
+#     }
 # }
 
+# Databases for local Docker DB
+# docker run -d --name levelup_db -e POSTGRES_USER=levelup -e POSTGRES_PASSWORD=PASSWORD -p 5961:5432 postgres
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'levelup',
+        'USER': 'levelup',
+        'PASSWORD': 'PASSWORD',
+        'HOST': 'localhost',
+        'PORT': 5961,
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'levelup_test',
+        'USER': 'anton',
+        'PASSWORD': 'Test123456',
+        'HOST': 'localhost',
+        'PORT': 5961,
+    },
+}
+
+# Databases for Docker-compose
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "levelup",
+#         "USER": "levelup",
+#         "PASSWORD": "PASSWORD",
+#         "HOST": "db",  # set in docker-compose.yml
+#         "PORT": 5432,  # default postgres port
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -155,13 +169,24 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:16379/0'
-CELERY_RESULT_BACKEND = 'django-db'
+# Celery for local Docker Celery
+# CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", 'redis://127.0.0.1:16379/0')
 
+# Redis
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+# Celery results
+# CELERY_RESULT_BACKEND = 'django-db'
+
+# CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+# CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+
+# 'USER': os.getenv("POSTGRES_USER", 'levelup'),
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:16379/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
