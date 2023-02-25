@@ -91,36 +91,36 @@ WSGI_APPLICATION = 'levelup.wsgi.application'
 
 # Databases for local Docker DB
 # docker run -d --name levelup_db -e POSTGRES_USER=levelup -e POSTGRES_PASSWORD=PASSWORD -p 5961:5432 postgres
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'levelup',
-        'USER': 'levelup',
-        'PASSWORD': 'PASSWORD',
-        'HOST': 'localhost',
-        'PORT': 5961,
-    },
-    'test': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'levelup_test',
-        'USER': 'anton',
-        'PASSWORD': 'Test123456',
-        'HOST': 'localhost',
-        'PORT': 5961,
-    },
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'levelup',
+#         'USER': 'levelup',
+#         'PASSWORD': 'PASSWORD',
+#         'HOST': 'localhost',
+#         'PORT': 5961,
+#     },
+#     'test': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'levelup_test',
+#         'USER': 'anton',
+#         'PASSWORD': 'Test123456',
+#         'HOST': 'localhost',
+#         'PORT': 5961,
+#     },
+# }
 
 # Databases for Docker-compose
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "levelup",
-#         "USER": "levelup",
-#         "PASSWORD": "PASSWORD",
-#         "HOST": "db",  # set in docker-compose.yml
-#         "PORT": 5432,  # default postgres port
-#     }
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "levelup",
+        "USER": "levelup",
+        "PASSWORD": "PASSWORD",
+        "HOST": "db",  # set in docker-compose.yml
+        "PORT": 5432,  # default postgres port
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
