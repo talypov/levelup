@@ -1,5 +1,15 @@
 import time
+import csv
+import sys
+import time
+from time import sleep
 
+from celery import shared_task
+from django_celery_results.models import TaskResult
+
+from levelup.celery import app
+from product.models import ProductListCSV, Order, Product
+from utils.parse_csv import is_new_product
 from django_celery_results.models import TaskResult
 from rest_framework import viewsets, status
 from rest_framework.decorators import parser_classes
@@ -160,12 +170,12 @@ class FileUploadView(GenericAPIView):
     def post(self, request):
         file = request.FILES['file']
         if file.content_type == 'text/csv':
-            filename = time.time()
+            filename = str(time.time())
         else:
             raise UnsupportedMediaType(file.content_type)
 
-        doc = ProductListCSV.objects.create(document_name=filename, file=file)
-        serializer = ProductListSerializer(doc, many=False)
+        upload_file = ProductListCSV.objects.create(document_name=filename, file=file)
+        serializer = ProductListSerializer(upload_file, many=False)
 
         parse_csv_task.delay()
 
