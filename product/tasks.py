@@ -3,7 +3,6 @@ import sys
 from time import sleep
 
 from celery import shared_task
-from django_celery_results.models import TaskResult
 
 from levelup.celery import app
 from product.models import ProductListCSV, Order, Product

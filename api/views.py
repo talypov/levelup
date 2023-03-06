@@ -1,15 +1,6 @@
 import time
-import csv
-import sys
-import time
-from time import sleep
 
-from celery import shared_task
-from django_celery_results.models import TaskResult
-
-from levelup.celery import app
-from product.models import ProductListCSV, Order, Product
-from utils.parse_csv import is_new_product
+from django.shortcuts import get_object_or_404
 from django_celery_results.models import TaskResult
 from rest_framework import viewsets, status
 from rest_framework.decorators import parser_classes
@@ -24,36 +15,16 @@ from product.models import Product, Order, ProductListCSV
 from product.tasks import parse_csv_task
 
 
-# class ProductListApiView(viewsets.ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-
 class ProductListApiView(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        return self.queryset
+        return Product.objects.all()
 
     def get_object(self):
-        p_id = self.kwargs['pk']
-        return self.get_queryset().filter(id=p_id).first()
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     try:
-    #         instance = self.get_object()
-    #     except (Product.DoesNotExist, KeyError):
-    #         return Response(
-    #             {"error": "Requested Product does not exist"}, status=status.HTTP_404_NOT_FOUND
-    #         )
-    #     serializer = self.get_serializer(instance)
-    #
-    #     return Response(serializer.data)
-
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.get_queryset()
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response(serializer.data)
+        p_id = self.kwargs.get('pk')
+        if p_id:
+            return self.get_queryset().filter(id=p_id).first()
 
     # def destroy(self, request, *args, **kwargs):
     #     try:
@@ -89,68 +60,32 @@ class ProductListApiView(viewsets.ModelViewSet):
     # def perform_create(self, serializer):
     #     serializer.save()
 
-#
-# class OrderListApiView(viewsets.ModelViewSet):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
 
 class OrderListApiView(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return self.queryset
+        return Order.objects.all()
 
     def get_object(self):
-        o_id = self.kwargs['pk']
-        return self.get_queryset().filter(id=o_id).first()
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     try:
-    #         instance = self.get_object()
-    #     except (Order.DoesNotExist, KeyError):
-    #         return Response(
-    #             {"error": "Requested Order does not exist"}, status=status.HTTP_404_NOT_FOUND
-    #         )
-    #     serializer = self.get_serializer(instance)
-    #
-    #     return Response(serializer.data)
-    #
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.get_queryset()
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response(serializer.data)
-
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    #
-    # def perform_create(self, serializer):
-    #     serializer.save()
+        o_id = self.kwargs.get('pk')
+        if o_id:
+            return self.get_queryset().filter(id=o_id).first()
 
 
 class TaskResultViewSet(viewsets.ModelViewSet):
-    queryset = TaskResult.objects.all()
     serializer_class = TaskResultSerializer
 
     def get_queryset(self):
-        return self.queryset
+        return TaskResult.objects.all()
 
     def get_object(self):
-        t_id = self.kwargs['pk']
-        return self.get_queryset().filter(id=t_id).first()
+        t_id = self.kwargs.get('pk')
+        if t_id:
+            return self.get_queryset().filter(id=t_id).first()
 
     def retrieve(self, request, *args, **kwargs):
-        try:
-            instance = self.get_object()
-        except (TaskResult.DoesNotExist, KeyError):
-            return Response(
-                {"error": "Requested TaskResult does not exist"}, status=status.HTTP_404_NOT_FOUND
-            )
+        instance = get_object_or_404(self.get_queryset(), **kwargs)
         serializer = self.get_serializer(instance)
         if serializer.data["status"]:
             return Response(f'Task status - {serializer.data["status"]}')
@@ -180,43 +115,3 @@ class FileUploadView(GenericAPIView):
         parse_csv_task.delay()
 
         return Response(serializer.data)
-
-
-# class TaskstatusView(APIView):
-#     # serializer_class = ProductListSerializer
-#     # queryset = TaskResult.objects.all()
-#     http_method_names = ['get', 'head']
-#
-#     def get_queryset(self):
-#         return TaskResult.objects.filter(task_id=self.kwargs["task_id"]).first()
-
-    # def get(self, request, format=None):
-    #     users = TaskResult.objects.all()
-    #     serializer = ProductListSerializer(users)
-    #     return Response(serializer.data)
-
-    # def get(self, request, *args, **kwargs):
-    #     task_id = kwargs.get('task_id')
-    #     result = TaskResult.objects.get(task_id=task_id)
-    #     # results = TaskResult.objects.all()
-    #     serializer = ProductListSerializer(result)
-    #     return Response(serializer.data)
-
-    # # def get(self, *args, **kwargs):
-    # def get(self, *args, **kwargs):
-    #     task_id = kwargs.get('task_id')
-    #     result = TaskResult.objects.get(task_id=task_id)
-    #
-    #     return Response(result.status)
-
-# class TaskstatusView(APIView):
-#     """
-#     Create a new user. It's called 'UserList' because normally we'd have a get
-#     method here too, for retrieving a list of all User objects.
-#     """
-#     http_method_names = ['get', 'head']
-#
-#     def get(self, request, *args, **kwargs):
-#         task_id = kwargs.get('task_id')
-#         serializer = TaskResultSerializer(TaskResult.objects.get(task_id=task_id), many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
