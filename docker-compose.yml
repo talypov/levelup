@@ -2,7 +2,10 @@ version: "3.9"
 
 services:
     web:
-        image: levelup_app:latest
+        build: .
+        environment:
+          ADMIN_USERNAME: ${ADMIN_USERNAME}
+          ADMIN_PASSWORD: ${ADMIN_PASSWORD}
         command: >
           bash -c "python /code/manage.py migrate
           && python /code/manage.py create_superuser
@@ -14,6 +17,9 @@ services:
           - 8000:8000
         depends_on:
           - db
+          - python
+    python:
+        image: python:3.8
     db:
         image: postgres
         volumes:

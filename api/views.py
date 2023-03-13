@@ -1,8 +1,9 @@
+import logging
 import time
 
-from django.shortcuts import get_object_or_404
 from django_celery_results.models import TaskResult
-from rest_framework import viewsets, status
+from rest_framework import pagination
+from rest_framework import viewsets
 from rest_framework.decorators import parser_classes
 from rest_framework.exceptions import UnsupportedMediaType
 from rest_framework.generics import GenericAPIView
@@ -14,17 +15,26 @@ from api.serializers import ProductSerializer, OrderSerializer, ProductListSeria
 from product.models import Product, Order, ProductListCSV
 from product.tasks import parse_csv_task
 
+logger = logging.getLogger(__name__)
+
+
+class PaginationClass(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 
 class ProductListApiView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
+    pagination_class = PaginationClass
 
     def get_queryset(self):
         return Product.objects.all()
 
     def get_object(self):
-        p_id = self.kwargs.get('pk')
-        if p_id:
-            return self.get_queryset().filter(id=p_id).first()
+        product_id = self.kwargs.get('pk')
+        if product_id:
+            return self.get_queryset().filter(id=product_id).first()
 
     # def destroy(self, request, *args, **kwargs):
     #     try:
@@ -63,39 +73,28 @@ class ProductListApiView(viewsets.ModelViewSet):
 
 class OrderListApiView(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
+    pagination_class = PaginationClass
 
     def get_queryset(self):
         return Order.objects.all()
 
     def get_object(self):
-        o_id = self.kwargs.get('pk')
-        if o_id:
-            return self.get_queryset().filter(id=o_id).first()
+        order_id = self.kwargs.get('pk')
+        if order_id:
+            return self.get_queryset().filter(id=order_id).first()
 
 
 class TaskResultViewSet(viewsets.ModelViewSet):
     serializer_class = TaskResultSerializer
+    pagination_class = PaginationClass
 
     def get_queryset(self):
         return TaskResult.objects.all()
 
     def get_object(self):
-        t_id = self.kwargs.get('pk')
-        if t_id:
-            return self.get_queryset().filter(id=t_id).first()
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = get_object_or_404(self.get_queryset(), **kwargs)
-        serializer = self.get_serializer(instance)
-        if serializer.data["status"]:
-            return Response(f'Task status - {serializer.data["status"]}')
-        else:
-            return Response("Requested Task does not exist")
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        task_id = self.kwargs.get('pk')
+        if task_id:
+            return self.get_queryset().filter(id=task_id).first()
 
 
 class FileUploadView(GenericAPIView):

@@ -1,13 +1,14 @@
 import csv
 import sys
 from time import sleep
-
+import logging
 from celery import shared_task
 
 from levelup.celery import app
 from product.models import ProductListCSV, Order, Product
 from utils.parse_csv import is_new_product
 
+logger = logging.getLogger(__name__)
 
 @shared_task
 def bar():
@@ -17,12 +18,9 @@ def bar():
 @app.task
 def parse_csv_task():
     obj = ProductListCSV.objects.all().order_by('-date_create').first()
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print('obj.file.path')
-    print(obj.file.path)
 
     if obj.is_done:
-        raise Exception('Import from last date CSV file already done')
+        logger.info('Import from last date CSV file already done')
     else:
         with open(obj.file.path, 'r') as csv_file:
             data = list(csv.reader(csv_file, delimiter=";"))
