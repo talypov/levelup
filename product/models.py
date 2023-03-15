@@ -11,7 +11,7 @@ def document_path_and_name(instance, filename):
     ext = filename.split('.')[-1]
     filename = f'{instance.document_name}.{ext}'
 
-    return os.path.join('files', filename)
+    return os.path.join('media', filename)
 
 
 class Order(models.Model):
