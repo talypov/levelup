@@ -36,40 +36,6 @@ class ProductListApiView(viewsets.ModelViewSet):
         if product_id:
             return self.get_queryset().filter(id=product_id).first()
 
-    # def destroy(self, request, *args, **kwargs):
-    #     try:
-    #         instance = self.get_object()
-    #         self.perform_destroy(instance)
-    #     except Exception:
-    #         pass
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
-
-    # def destroy(self, request, *args, **kwargs):
-    #     p_id = self.kwargs['pk']
-    #     self.get_queryset().filter(id=p_id).first().delete()
-    #     return super().destroy(request, *args, **kwargs)
-
-    # def destroy(self, request, *args, **kwargs):
-    #     p_id = self.kwargs['pk']
-    #     product = self.get_queryset().filter(id=p_id).first().delete()
-    #     # product = self.get_queryset().filter(id=p_id).first()
-    #     return HttpResponse(status=status.HTTP_200_OK)
-
-    # def create(self, request, *args, **kwargs):
-    #     response = super().create(request, *args, **kwargs)
-    #     instance = response.data
-    #     return Response({'status': 'success'})
-
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    #
-    # def perform_create(self, serializer):
-    #     serializer.save()
-
 
 class OrderListApiView(viewsets.ModelViewSet):
     serializer_class = OrderSerializer

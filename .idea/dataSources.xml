@@ -21,7 +21,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://db:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://db:5432/levelup</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="db2.sqlite3" uuid="744c2001-9d2a-4ae3-b715-d5af8a7fa1ef">

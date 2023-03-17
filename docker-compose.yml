@@ -9,6 +9,7 @@ services:
         command: >
           bash -c "python /code/manage.py migrate
           && python /code/manage.py create_superuser
+          && python /code/manage.py test
           && python manage.py runserver 0.0.0.0:8000"
 
         volumes:
