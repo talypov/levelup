@@ -2,14 +2,25 @@ version: "3.9"
 
 services:
     web:
-        image: levelup_app:latest
-        command: python /code/manage.py runserver 0.0.0.0:8000
+        build: .
+        environment:
+          ADMIN_USERNAME: ${ADMIN_USERNAME}
+          ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+        command: >
+          bash -c "python /code/manage.py migrate
+          && python /code/manage.py create_superuser
+          && python /code/manage.py test
+          && python manage.py runserver 0.0.0.0:8000"
+
         volumes:
           - .:/code
         ports:
           - 8000:8000
         depends_on:
           - db
+          - python
+    python:
+        image: python:3.8
     db:
         image: postgres
         volumes:
@@ -17,7 +28,7 @@ services:
         environment:
           - CELERY_BROKER=redis://redis:6379/0
           - CELERY_BACKEND=redis://redis:6379/0
-          - "POSTGRES_HOST_AUTH_METHOD=trust"
+          - POSTGRES_HOST_AUTH_METHOD=trust
     celery:
         build: .
         command: celery -A levelup worker -l debug -P gevent

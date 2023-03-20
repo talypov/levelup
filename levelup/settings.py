@@ -158,6 +158,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
@@ -173,10 +175,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", 'redis://127.0.0.1:16379/0')
 # CELERY_RESULT_BACKEND = 'django-db'
 
+# CACHES for local
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://redis:16379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+
 # Redis for DC
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_RESULT_EXTENDED = True
+
 
 CACHES = {
     "default": {
@@ -188,20 +202,31 @@ CACHES = {
     }
 }
 
-# CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
-# CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
-
-# 'USER': os.getenv("POSTGRES_USER", 'levelup'),
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
-
 CELERY_CACHE_BACKEND = 'default'
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '[DJANGO] %(levelname)s %(asctime)s %(module)s '
+                      '%(name)s.%(funcName)s:%(lineno)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}

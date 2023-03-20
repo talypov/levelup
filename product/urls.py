@@ -1,6 +1,6 @@
 from django.urls import path
 
-from product.views import ProductList, ProductDetail, OrderDetail, OrderList,\
+from product.views import ProductList, ProductDetail, OrderDetail, OrderList, \
     ProductDelete, OrderDelete, ProductUpdate, ProductCreate, OrderCreate, OrderUpdate
 
 urlpatterns = [

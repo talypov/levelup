@@ -88,7 +88,7 @@ class TestCsulReleaseViewSet(LevelUpAPITestCase):
     def test_products_list_success(self):
         response = self.client.get('/api/products/', format='json')
         products_db = Product.objects.all().count()
-        products_rq = len(response.data)
+        products_rq = response.data.get('count')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(products_db, products_rq)
@@ -130,7 +130,7 @@ class TestCsulReleaseViewSet(LevelUpAPITestCase):
     def test_order_list_success(self):
         response = self.client.get('/api/orders/', format='json')
         products_db = Order.objects.all().count()
-        products_rq = len(response.data)
+        products_rq = response.data.get('count')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(products_db, products_rq)
